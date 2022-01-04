@@ -1,0 +1,7 @@
+# Please set your own .gitignore in your open source project before upload.
+
+package-lock.json
+node_modules/
+downloads/**
+db/session.db3
+.env

@@ -1,0 +1,40 @@
+extends ./frame.pug
+
+block body
+  .container.d-flex.justify-content-center.align-items-center
+    form#login-form.my-5(method='post' style='width: 100%; max-width: 400px;')
+      h4 Login
+      .form-floating.mb-3
+        input#floatingInput.form-control(type='text' name='username' placeholder='Username')
+        label(for='floatingInput') Username
+        .invalid-feedback Please enter username
+      .form-floating.mb-3
+        input#floatingPassword.form-control(type='password' name='password' placeholder='Password')
+        label(for='floatingPassword') Password
+        .invalid-feedback Please enter password
+      button.btn.btn-primary.mb-5(type='submit') Submit
+
+      if errorMsg
+        #login-msg.alert.alert-danger(role='alert') #{ errorMsg }
+
+block foot-script
+  script(type='text/javascript').
+    document.addEventListener('DOMContentLoaded', function() {
+      $('#login-form').on('submit', function(e) {
+        var $form = $(this),
+          $userInput = $('input[name="username"]', $form),
+          $passInput = $('input[name="password"]', $form);
+
+        $('.is-invalid', $form).removeClass('is-invalid');
+        if ($userInput.val().trim().length === 0) $userInput.addClass('is-invalid');
+        if ($passInput.val().trim().length === 0) $passInput.addClass('is-invalid');
+        if ($('.is-invalid', $form).length > 0) {
+          e.preventDefault();
+          return false
+        }
+
+        return true;
+      });
+    });
+
+
