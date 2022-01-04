@@ -68,6 +68,8 @@ router.all('/list', async (req, res, next) => {
 
 router.use('/mission', require('./mission'));
 
+router.use('/icons', require('./icons'));
+
 router.all('/session', async (req, res, next) => {
   return res.json(req.session);
 });
