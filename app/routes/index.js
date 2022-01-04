@@ -66,7 +66,7 @@ router.all('/list', async (req, res, next) => {
   }
 });
 
-router.use('/mission', require('./mission'));
+router.use('/mission', require('./mission-relay'));
 
 router.use('/icons', require('./icons'));
 
