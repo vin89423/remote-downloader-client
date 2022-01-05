@@ -1,0 +1,124 @@
+.form-floating .form-control {
+  border-radius: 0;
+  border-top: transparent;
+  border-left: transparent;
+  border-right: transparent;
+}
+.form-floating label {
+  padding-left: 0;
+}
+
+/* Nav Header */
+.navbar {
+  background-color: #212529;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+}
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+.navbar-brand:hover {
+  text-decoration: none;
+  color: #fff;
+}
+.navbar ul.nav {
+  margin-left: auto;
+  justify-content: center;
+}
+.navbar ul.nav .nav-item {
+  margin-left: .75rem;
+}
+.navbar ul.nav .nav-item a {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: #fff;
+}
+
+/* Login Form */
+#login-form {
+  width: 100%;
+  max-width: 400px;
+}
+#login-form button {
+  width: 100%;
+}
+
+/* List Form */
+#no-mission {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+#mission-list {
+  display: none;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+#add-mission {
+  position: fixed;
+  right: 3rem;
+  bottom: 3rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+}
+
+/* Download Card */
+.download-card {
+  margin-bottom: .75rem;
+}
+.download-card .card-body {
+  display: flex;
+  flex-direction: row;
+}
+.download-card .icon {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding-right: 1rem;
+}
+.download-card .icon img {
+  width: auto;
+  height: 128px;
+}
+.download-card .detail {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.download-card .detail > label,
+.download-card .detail > a {
+  margin-bottom: 1rem;
+  display: block;
+}
+.download-card .progress {
+  margin-bottom: 1rem;
+}
+.download-card .ctrl-finished,
+.download-card .ctrl-error {
+  display: none;
+}
+.download-card .ctrl-finished,
+.download-card .ctrl-error {
+  display: none;
+}
+.download-card .ctrl-finished .btn,
+.download-card .ctrl-finished .card-link,
+.download-card .ctrl-error .btn,
+.download-card .ctrl-error .card-link {
+  margin-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .download-card .icon {
+    display: inline-flex;
+    width: 16.66666667%;
+  }
+  .download-card .detail {
+    width: calc(83% - 1rem);
+  }
+}

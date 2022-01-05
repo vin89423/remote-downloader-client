@@ -121,10 +121,10 @@ const helper = {
      * @param {String} endpoint Endpoint URL
      * @param {String} method Request method
      * @param {Object} [data={}] Form Body
-     * @param {Object} [cookies=null] Request cookies
+     * @param {String} [accessCookie=null] Request session Cookie
      *
      */
-    makeRequest: async function(endpoint, method, data = {}, cookies = null) {
+    makeRequest: async function(endpoint, method, data = {}, accessCookie = null) {
       method = String(method).toLocaleLowerCase();
 
       const controller = new AbortController();
@@ -139,12 +139,9 @@ const helper = {
       if (!['get', 'head'].includes(method) && data) {
         options.body = helper.url.httpBuildQuery(data);
       }
-      if (cookies) {
-        const cookieStr = Object.entries(cookies).map(([key, value]) => {
-          return `${key}=${value}`;
-        });
+      if (accessCookie) {
         options.headers = {
-          cookie: cookieStr.join('; ')
+          cookie: `connect.sid=${accessCookie}`
         };
       }
       try {
@@ -155,30 +152,11 @@ const helper = {
         clearTimeout(timeout);
       }
     }
-  },
+  }
 
-
-  prepareLocalsMiddleware
 };
 
 module.exports = helper;
-
-/**
- * Prepare view required infos
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- */
-function prepareLocalsMiddleware(req, res, next) {
-  res.locals.req = req;
-  req.helper = {...helper.url, ...helper.string, ...helper.network };
-  res.locals = { ...res.locals, ...req.helper };
-  res.locals.apiUrl = config.API_URL;
-
-  res.locals.loggedIn = !!req.session.accessCookies;
-
-  next();
-}
 
 function remapInternationalCharToAscii (c) {
   if ('àåáâãåa'.indexOf(c) !== -1) return 'a'

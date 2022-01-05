@@ -1,16 +1,21 @@
-.navbar.navbar-dark.bg-dark.shadow-sm
+.navbar
   .container
-    a.navbar-brand.d-flex.align-items-center(href='#')
+    .navbar-brand
       strong Remote Downloader
-    ul.nav.ms-lg-auto.mb-2.justify-content-center.mb-md-0
+    ul.nav
       if loggedIn
         li.nav-item
-          a.nav-link.text-light.px-2(
-            href=baseUrl('mission/download-all')
+          a.nav-link(
+            href=baseUrl('relay/mission/download-all')
             target="_blank"
             title="Download As Package"
           )
             i.fas.fa-download
         li.nav-item
-          a.nav-link.text-light.px-2(href='#' data-bs-toggle="modal" title="Remove all Downloads" data-bs-target="#remove-all-modal")
+          a.nav-link(
+            href='#'
+            data-bs-toggle="modal"
+            title="Remove all Downloads"
+            data-bs-target="#remove-all-modal"
+          )
             i.fas.fa-trash

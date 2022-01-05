@@ -4,69 +4,33 @@ const express = require('express');
 const router = express.Router();
 const createHttpError = require('http-errors');
 const helper = require('../services/helper');
-const config = require('../../config');
 
-router.use(helper.prepareLocalsMiddleware);
+router.use((req, res, next) => {
+  res.locals.req = req;
+  req.helper = {...helper.url, ...helper.string, ...helper.network };
+  res.locals = { ...res.locals, ...req.helper };
 
-router.all('/', async (req, res, next) => {
+  res.locals.loggedIn = !!req.session.accessCookie;
+  next();
+});
+
+router.get('/', async (req, res, next) => {
   try {
-    if (req.method === 'POST') {
-      if (!req.body.username || !req.body.password) {
-        throw createHttpError(400);
-      }
-      try {
-        const response = await req.helper.makeRequest(`${config.API_URL}auth`, 'POST', {
-          username: String(req.body.username).trim(),
-          password: String(req.body.password).trim()
-        });
-        if (response.status !== 200) {
-          res.locals.errorMsg = await response.text();
-        }
-
-        let accessCookie = {};
-        response.headers.get('set-cookie')
-          .replace(/\;\s?HttpOnly\s?$/i, '')
-          .split('; ')
-          .map(part => {
-            let parts = part.split('=');
-            if (['connect.sid'].includes(parts[0]))
-              accessCookie[parts[0]] = parts[1];
-          });
-        req.session.accessCookies = accessCookie;
-
-        return res.redirect(req.helper.baseUrl('list'));
-      } catch (error) {
-        console.log(error);
-        throw createHttpError(500);
-      }
+    if (req.session.errorMsg) {
+      res.locals.errorMsg = req.session.errorMsg;
+      delete req.session.errorMsg;
     }
-
-    return res.render('login');
+    if (!req.session.accessCookie) {
+      return res.render('login');
+    } else {
+      return res.render('list');
+    }
   } catch (error) {
     next(error);
   }
 });
 
-router.all('/list', async (req, res, next) => {
-  try {
-    if (!req.session.accessCookies) {
-      return res.redirect(req.helper.baseUrl());
-    }
-
-    if (req.method === 'POST') {
-      const response = await req.helper.makeRequest(`${config.API_URL}mission`,
-        'GET', {}, req.session.accessCookies);
-      res.status(response.status);
-      return res.send(await response.text());
-    }
-
-    return res.render('list');
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.use('/mission', require('./mission-relay'));
+router.use('/relay', require('./relay'));
 
 router.use('/icons', require('./icons'));
 
